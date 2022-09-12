@@ -9,7 +9,7 @@
 
 void initializeWordTree(WordTree *wordTree)
 {
-    auto t = clock();
+    auto wordCount = 0;
     std::fstream dictFile;
     dictFile.open("dictionary.txt", std::ios::in);
     if (dictFile.is_open())
@@ -20,11 +20,13 @@ void initializeWordTree(WordTree *wordTree)
             std::stringstream ss(line);
             std::string trimmed_string;
             ss >> trimmed_string;
-            wordTree->addWordToTree(&trimmed_string);
+            if (wordTree->addWordToTree(&trimmed_string))
+            {
+                wordCount++;
+            }
         }
         dictFile.close(); // close the file object.
-        auto time_elapsed = (float)(clock() - t) / CLOCKS_PER_SEC;
-        std::cout << "Word tree initialized: " << time_elapsed << "s\n";
+        std::cout << wordCount << " words added to dictionary\n";
     }
 }
 
@@ -35,6 +37,7 @@ int main()
     initializeWordTree(wordTree);
 
     BoggleBoard *myBoard = new BoggleBoard();
+    std::cout << BoggleBoard::SIZE << "x" << BoggleBoard::SIZE << " board" << std::endl;
     std::cout << *myBoard;
 
     BoggleSolver *solver = new BoggleSolver(myBoard, wordTree);

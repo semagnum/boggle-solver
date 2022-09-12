@@ -41,16 +41,6 @@ std::set<std::string> BoggleSolver::solve()
         }
     }
 
-    auto wordItr = wordList.begin();
-    while (wordItr != wordList.end())
-    {
-        if (wordItr->length() < 4) {
-            wordItr = wordList.erase(wordItr);
-        }
-        else {
-            ++wordItr;
-        }
-    }
 
     return wordList;
 }

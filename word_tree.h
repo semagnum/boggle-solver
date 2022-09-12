@@ -13,8 +13,12 @@ private:
     void addWordToTree(const std::string *word, unsigned int index);
     std::string printTree(std::string currWord) const;
 
+    short minWordLength;
+    short maxWordLength;
+
 public:
-    WordTree() : isWord(false)
+    WordTree() : WordTree(4, 15) {}
+    WordTree(short minWl, short maxWl) : isWord(false), minWordLength(minWl), maxWordLength(maxWl)
     {
         for (auto i = 0; i < NUM_LETTERS; i++)
         {
@@ -31,7 +35,7 @@ public:
     bool isWord = false;
     WordTree *paths[NUM_LETTERS];
 
-    void addWordToTree(const std::string *word);
+    bool addWordToTree(const std::string *word);
     std::string printTree() const;
 };
 
@@ -59,9 +63,16 @@ void WordTree::addWordToTree(const std::string *word, unsigned int index)
     this->paths[char_to_index]->addWordToTree(word, index + 1);
 }
 
-void WordTree::addWordToTree(const std::string *word)
+bool WordTree::addWordToTree(const std::string *word)
 {
+    auto len = word->length();
+    if (len < this->minWordLength || len > this->maxWordLength)
+    {
+        return false;
+    }
+
     addWordToTree(word, 0U);
+    return true;
 }
 
 std::string WordTree::printTree(std::string currWord) const
