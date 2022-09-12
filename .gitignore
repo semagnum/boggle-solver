@@ -1,0 +1,6 @@
+.vscode/
+
+# to prevent the dictionary itself from being tracked, as that can get quiet big
+dictionary.txt
+
+boggle-exe
