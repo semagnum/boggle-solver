@@ -47,14 +47,11 @@ std::set<std::string> BoggleSolver::solve()
 
 void BoggleSolver::solve(const unsigned short row, const unsigned short col, const WordTree *wordTree, std::string currWord, std::set<std::string> *words)
 {
-    if (this->visited[row][col]) return; // currently visited
-
     this->visited[row][col] = true;
 
     if (wordTree->isWord) {
         words->insert(currWord);
     }
-
     
     // for each of the adjacent cells
     for (short row_offset = -1; row_offset <= 1; row_offset++)
@@ -66,9 +63,16 @@ void BoggleSolver::solve(const unsigned short row, const unsigned short col, con
             // get character
             const unsigned short board_row = (short) row - row_offset;
             const unsigned short board_col = (short) col - col_offset;
+
+            // out of bounds check
             if (board_row >= BoggleBoard::SIZE || board_col >= BoggleBoard::SIZE)
                 continue;
-            
+
+            // already visited
+            if (this->visited[board_row][board_col])
+                continue; 
+
+            // converts adjacent cell's character to WordTree index            
             char cellLetter = this->board->board[board_row][board_col];
             unsigned int char_to_index = cellLetter - 'a';
 
@@ -82,6 +86,7 @@ void BoggleSolver::solve(const unsigned short row, const unsigned short col, con
             }
         }
     }
+
     this->visited[row][col] = false;
 }
 
